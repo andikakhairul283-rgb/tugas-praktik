@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>prak JavaScript</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: white;
+      color: black;
+      margin: 20px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .dark-mode {
+      background-color: #1e1e1e;
+      color: white;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .btn {
+      margin: 5px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 6px;
+      background-color: #7d7f7e;
+      color: white;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #5dfb5a;
+    }
+
+    #cardContainer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background-color: #fefefe;
+      padding: 15px;
+      border-radius: 10px;
+      width: 180px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      position: relative;
+      text-align: center;
+    }
+
+    .card button {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .popup-content {
+      background-color: white;
+      padding: 25px;
+      border-radius: 10px;
+      width: 300px;
+      text-align: center;
+    }
+
+    .popup-content input {
+      width: 90%;
+      padding: 8px;
+      margin: 10px 0;
+    }
+
+    .close-btn {
+      background-color: crimson;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Demo Proses JavaScript</h1>
+
+  <div style="text-align:center;">
+    <button class="btn" onclick="toggleMode()">🌙 Mode Malam</button>
+    <button class="btn" onclick="addCard()">➕ Tambah Card</button>
+    <button class="btn" onclick="openPopup()">📝 Form Popup</button>
+    <button class="btn" onclick="cekKOM()">🔍 Cek KOM Mahasiswa</button>
+  </div>
+
+  <div id="cardContainer"></div>
+
+
+  <div id="popupForm" class="popup">
+    <div class="popup-content">
+      <h3>Form Data Mahasiswa</h3>
+      <input type="text" id="nama" placeholder="Masukkan nama...">
+      <br>
+      <button class="btn" onclick="submitForm()">Kirim</button>
+      <button class="btn close-btn" onclick="closePopup()">Tutup</button>
+    </div>
+  </div>
+
+  <script>
+   
+    const dataKelas = {};
+    let kelas = ["A", "B", "C"];
+    let nimAwal = 251402001;
+    for (let i = 0; i < 150; i++) {
+      let nim = (nimAwal + i).toString();
+      dataKelas[nim] = kelas[i % 3];
+    }
+
+   
+    let modeMalamAktif = false;
+
+   
+    function toggleMode() {
+      const body = document.body;
+      if (modeMalamAktif === false) {
+        body.classList.add("dark-mode");
+        modeMalamAktif = true;
+      } else if (modeMalamAktif === true) {
+        body.classList.remove("dark-mode");
+        modeMalamAktif = false;
+      } else {
+        alert("Terjadi kesalahan dalam pergantian mode!");
+      }
+    }
+
+    
+    let cardIndex = 1;
+    function addCard() {
+      const container = document.getElementById("cardContainer");
+      const card = document.createElement("div");
+      card.classList.add("card");
+      card.innerHTML = `
+        <button onclick="removeCard(this)">×</button>
+        <h4><b>Card ${cardIndex}</b></h4>
+        <p>Ini adalah card ke-${cardIndex}</p>
+      `;
+      container.appendChild(card);
+      cardIndex++;
+    }
+
+    function removeCard(button) {
+      button.parentElement.remove();
+    }
+
+    
+    function openPopup() {
+      document.getElementById("popupForm").style.display = "flex";
+    }
+
+    function closePopup() {
+      document.getElementById("popupForm").style.display = "none";
+    }
+
+    function submitForm() {
+      const nama = document.getElementById("nama").value;
+      alert("Form berhasil dikirim!\nNama: " + nama);
+      closePopup();
+    }
+
+    
+    function cekKOM() {
+      const nim = prompt("Masukkan NIM Anda:");
+      if (!nim) {
+        alert("NIM tidak boleh kosong!");
+      } else if (dataKelas[nim]) {
+        alert(`NIM ${nim} berada di KOM ${dataKelas[nim]}`);
+      } else {
+        alert("NIM tidak ditemukan dalam data.");
+      }
+    }
+  </script>
+
+</body>
+</html>
